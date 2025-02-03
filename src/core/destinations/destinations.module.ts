@@ -1,0 +1,28 @@
+// src/core/destinations/destinations.module.ts
+
+import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';  // Asegúrate de que MongooseModule esté importado
+import { DestinationsController } from 'src/infrastructure/controllers/destinations/destinations.controller';
+import { DestinationsService } from './services/destinations.service';
+import { Destination, DestinationSchema } from './entities/destination.entity';
+import { Country, CountrySchema } from './entities/locations/country.entity';
+import { Region, RegionSchema } from './entities/locations/region.entity';
+import { Department, DepartmentSchema } from './entities/locations/department.entity';
+import { City, CitySchema } from './entities/locations/city.entity';
+import { CountryController } from 'src/infrastructure/controllers/destinations/locations/country.controller';
+import { CountryService } from './services/locations/country.service';
+
+@Module({
+  imports: [
+    MongooseModule.forFeature([
+      { name: Destination.name, schema: DestinationSchema },
+      { name: Country.name, schema: CountrySchema },  // Registro del modelo Country
+      { name: Region.name, schema: RegionSchema },    // Registro del modelo Region
+      { name: Department.name, schema: DepartmentSchema },  // Registro del modelo Department
+      { name: City.name, schema: CitySchema },         // Registro del modelo City
+    ]),
+  ],
+  controllers: [DestinationsController, CountryController],
+  providers: [DestinationsService, CountryService],
+})
+export class DestinationsModule {}
