@@ -13,6 +13,10 @@ import { CountryController } from 'src/infrastructure/controllers/destinations/l
 import { CountryService } from './services/locations/country.service';
 import { RegionController } from 'src/infrastructure/controllers/destinations/locations/region.controller';
 import { RegionService } from './services/locations/region.service';
+import { DepartmentController } from 'src/infrastructure/controllers/destinations/locations/departament.controller';
+import { DepartmentService } from './services/locations/departament.service';
+import { CityController } from 'src/infrastructure/controllers/destinations/locations/city.controller';
+import { CityService } from './services/locations/city.service';
 
 @Module({
   imports: [
@@ -24,7 +28,7 @@ import { RegionService } from './services/locations/region.service';
       { name: City.name, schema: CitySchema },         // Registro del modelo City
     ]),
   ],
-  controllers: [DestinationsController, CountryController,RegionController],
-  providers: [DestinationsService, CountryService, RegionService],
+  controllers: [DestinationsController, CountryController,RegionController, DepartmentController, CityController],
+  providers: [DestinationsService, CountryService, RegionService , DepartmentService , CityService],
 })
 export class DestinationsModule {}
