@@ -1,15 +1,14 @@
-// src/core/destinations/dtos/create-destination.dto.ts
 import { IsString, IsNotEmpty, IsOptional, IsNumber, IsDate, IsArray, IsBoolean, IsEnum } from 'class-validator';
 import { Type } from 'class-transformer';
 
-// Enum para el tipo de actividad
-export enum ActivityType {
-  OUTDOOR = 'Outdoor',
-  INDOOR = 'Indoor',
-  BOTH = 'Both',
-}
+// Importamos los enums
+import { ActivityType } from '../enums/destiny/activity-type.enum'; 
+import { DestinationCategory } from '../enums/destiny/category.enum'; 
+import { DifficultyLevel } from '../enums/destiny/difficulty-level.enum'; 
+import { AvailabilitySeason } from '../enums/destiny/availability-season.enum';
+import { Language } from '../enums/destiny/language.enum';
+import { DestinationStatus } from '../enums/destiny/destination-status.enum';
 
-// DTO para la creación de un destino
 export class CreateDestinationDto {
   @IsString()
   @IsNotEmpty()
@@ -49,9 +48,9 @@ export class CreateDestinationDto {
   price: number; // Precio del destino
 
   @IsArray()
-  @IsString({ each: true })
+  @IsEnum(DestinationCategory, { each: true })
   @IsOptional()
-  categories: string[]; // Categorías del destino
+  categories: DestinationCategory[]; // Categorías del destino
 
   @IsString()
   @IsOptional()
@@ -88,9 +87,9 @@ export class CreateDestinationDto {
   @IsOptional()
   departureTime: string; // Hora de salida del destino
 
-  @IsString()
+  @IsEnum(DestinationStatus)
   @IsOptional()
-  status: string; // Estado del destino (activo/inactivo)
+  status: DestinationStatus; // Estado del destino (activo/inactivo)
 
   @IsNumber()
   @IsOptional()
@@ -108,13 +107,13 @@ export class CreateDestinationDto {
   @IsOptional()
   additionalCosts: string; // Costos adicionales
 
-  @IsString()
+  @IsEnum(DifficultyLevel)
   @IsOptional()
-  difficultyLevel: string; // Nivel de dificultad del destino
+  difficultyLevel: DifficultyLevel; // Nivel de dificultad del destino
 
-  @IsString()
+  @IsEnum(AvailabilitySeason)
   @IsOptional()
-  availabilitySeason: string; // Temporada de disponibilidad
+  availabilitySeason: AvailabilitySeason; // Temporada de disponibilidad
 
   @IsString()
   @IsOptional()
@@ -128,9 +127,9 @@ export class CreateDestinationDto {
   @IsOptional()
   restrictions: string; // Restricciones del destino
 
-  @IsString()
+  @IsEnum(Language)
   @IsOptional()
-  language: string; // Idioma del destino
+  language: Language; // Idioma del destino
 
   @IsBoolean()
   @IsOptional()

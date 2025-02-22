@@ -1,10 +1,17 @@
-// src/core/destinations/entities/destination.entity.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-import { Country } from './locations/country.entity';  // Relación con Country
-import { Region } from './locations/region.entity';    // Relación con Region
-import { Department } from './locations/department.entity'; // Relación con Department
-import { City } from './locations/city.entity';          // Relación con City
+
+// Importamos los enums
+import { ActivityType } from '../enums/destiny/activity-type.enum';
+import { DestinationCategory } from '../enums/destiny/category.enum';
+import { DifficultyLevel } from '../enums/destiny/difficulty-level.enum';
+import { AvailabilitySeason } from '../enums/destiny/availability-season.enum';
+import { Language } from '../enums/destiny/language.enum';
+import { DestinationStatus } from '../enums/destiny/destination-status.enum';
+import { Country } from './locations/country.entity';
+import { Region } from './locations/region.entity';
+import { Department } from './locations/department.entity';
+import { City } from './locations/city.entity';
 
 @Schema()
 export class Destination extends Document {
@@ -35,14 +42,14 @@ export class Destination extends Document {
   @Prop({ required: true })
   price: number; // Precio del destino
 
-  @Prop([String])
-  categories: string[]; // Categorías del destino
+  @Prop({ type: [String], enum: DestinationCategory })
+  categories: DestinationCategory[]; // Categorías del destino
 
   @Prop()
   accessibility: string; // Accesibilidad del destino
 
-  @Prop([String])
-  activityTypes: string[]; // Tipo de actividades disponibles
+  @Prop({ type: [String], enum: ActivityType })
+  activityTypes: ActivityType[]; // Tipo de actividades disponibles
 
   @Prop()
   recommendedDuration: string; // Duración recomendada para el destino
@@ -62,8 +69,8 @@ export class Destination extends Document {
   @Prop()
   departureTime: string; // Hora de salida
 
-  @Prop()
-  status: string; // Estado del destino (activo/inactivo)
+  @Prop({ enum: DestinationStatus, default: DestinationStatus.ACTIVE })
+  status: DestinationStatus; // Estado del destino (activo/inactivo)
 
   @Prop()
   minAge: number; // Edad mínima requerida
@@ -77,11 +84,11 @@ export class Destination extends Document {
   @Prop()
   additionalCosts: string; // Costos adicionales
 
-  @Prop()
-  difficultyLevel: string; // Nivel de dificultad
+  @Prop({ enum: DifficultyLevel })
+  difficultyLevel: DifficultyLevel; // Nivel de dificultad
 
-  @Prop()
-  availabilitySeason: string; // Temporada de disponibilidad
+  @Prop({ enum: AvailabilitySeason })
+  availabilitySeason: AvailabilitySeason; // Temporada de disponibilidad
 
   @Prop()
   specialBenefits: string; // Beneficios especiales
@@ -92,12 +99,11 @@ export class Destination extends Document {
   @Prop()
   restrictions: string; // Restricciones del destino
 
-  @Prop()
-  language: string; // Idioma en el que se ofrece el destino
+  @Prop({ enum: Language })
+  language: Language; // Idioma en el que se ofrece el destino
 
   @Prop()
   petFriendly: boolean; // Si el destino es pet-friendly
 }
 
 export const DestinationSchema = SchemaFactory.createForClass(Destination);
-

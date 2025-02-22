@@ -3,7 +3,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';  // Importamos Types desde mongoose
-import { Destination } from '../entities/destination.entity';
+import { Destination } from '../entities/destiny.entity';
 import { CreateDestinationDto } from '../dtos/create-destination.dto';
 import { Country } from '../entities/locations/country.entity';
 import { Region } from '../entities/locations/region.entity';

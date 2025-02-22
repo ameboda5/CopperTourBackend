@@ -4,7 +4,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';  // Asegúrate de que MongooseModule esté importado
 import { DestinationsController } from 'src/infrastructure/controllers/destinations/destinations.controller';
 import { DestinationsService } from './services/destinations.service';
-import { Destination, DestinationSchema } from './entities/destination.entity';
+import { Destination, DestinationSchema } from './entities/destiny.entity';
 import { Country, CountrySchema } from './entities/locations/country.entity';
 import { Region, RegionSchema } from './entities/locations/region.entity';
 import { Department, DepartmentSchema } from './entities/locations/department.entity';

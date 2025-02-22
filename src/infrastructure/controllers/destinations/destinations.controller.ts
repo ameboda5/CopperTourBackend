@@ -3,7 +3,7 @@
 import { Controller, Post, Body, Get, Param, Put, Delete } from '@nestjs/common';
 import { DestinationsService } from '../../../core/destinations/services/destinations.service';
 import { CreateDestinationDto } from '../../../core/destinations/dtos/create-destination.dto';
-import { Destination } from '../../../core/destinations/entities/destination.entity';
+import { Destination } from '../../../core/destinations/entities/destiny.entity';
 
 @Controller('destinations')
 export class DestinationsController {
