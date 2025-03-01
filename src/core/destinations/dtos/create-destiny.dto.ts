@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsNumber, IsDate, IsArray, IsBoolean, IsEnum } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsNumber, IsDate, IsArray, IsBoolean, IsEnum, IsUrl, Min, Max, Length } from 'class-validator';
 import { Type } from 'class-transformer';
 
 // Importamos los enums
@@ -8,6 +8,7 @@ import { DifficultyLevel } from '../enums/destiny/difficulty-level.enum';
 import { AvailabilitySeason } from '../enums/destiny/availability-season.enum';
 import { Language } from '../enums/destiny/language.enum';
 import { DestinationStatus } from '../enums/destiny/destination-status.enum';
+import { Types } from 'mongoose';
 
 export class CreateDestinationDto {
   @IsString()
@@ -16,26 +17,28 @@ export class CreateDestinationDto {
 
   @IsString()
   @IsNotEmpty()
+  @Length(10, 500)
   description: string; // Descripción del destino
 
   @IsString()
   @IsNotEmpty()
-  country: string; // ID de país (referencia al país)
+  country:  Types.ObjectId; // ID de país (referencia al país)
 
   @IsString()
   @IsNotEmpty()
-  region: string; // ID de región (referencia a la región)
+  region:  Types.ObjectId; // ID de región (referencia a la región)
 
   @IsString()
   @IsNotEmpty()
-  department: string; // ID de departamento (referencia al departamento)
+  department:  Types.ObjectId; // ID de departamento (referencia al departamento)
 
   @IsString()
   @IsNotEmpty()
-  city: string; // ID de ciudad (referencia a la ciudad)
+  city:  Types.ObjectId; // ID de ciudad (referencia a la ciudad)
 
   @IsString()
   @IsOptional()
+  @IsUrl()
   imageUrl: string; // URL de la imagen del destino
 
   @IsArray()
@@ -44,6 +47,7 @@ export class CreateDestinationDto {
   activities: string[]; // Actividades disponibles en el destino
 
   @IsNumber()
+  @Min(0)
   @IsNotEmpty()
   price: number; // Precio del destino
 
@@ -63,6 +67,7 @@ export class CreateDestinationDto {
 
   @IsString()
   @IsOptional()
+  @Length(5,500)
   recommendedDuration: string; // Duración recomendada para el destino
 
   @IsNumber()
@@ -92,15 +97,19 @@ export class CreateDestinationDto {
   status: DestinationStatus; // Estado del destino (activo/inactivo)
 
   @IsNumber()
+  @Min(1)
+  @Max(120)
   @IsOptional()
   minAge: number; // Edad mínima requerida
 
   @IsString()
   @IsOptional()
+  @Length(10, 1000)
   itinerary: string; // Itinerario del destino
 
   @IsString()
   @IsOptional()
+  @Length(10, 500)
   transportationService: string; // Información sobre el servicio de transporte
 
   @IsString()
@@ -117,14 +126,17 @@ export class CreateDestinationDto {
 
   @IsString()
   @IsOptional()
+  @Length(10, 500)
   specialBenefits: string; // Beneficios especiales del destino
 
   @IsString()
   @IsOptional()
+  @Length(10, 800)
   guideInfo: string; // Información sobre el guía
 
   @IsString()
   @IsOptional()
+  @Length(10,800)
   restrictions: string; // Restricciones del destino
 
   @IsEnum(Language)

@@ -3,7 +3,7 @@
 import { IsMongoId, IsOptional } from 'class-validator';
 import { Types } from 'mongoose';  // Importamos Types de mongoose
 
-export class CreateDestinationDto {
+export class CreateLocationDto {
   @IsMongoId()
   country: Types.ObjectId;  // Usamos Types.ObjectId en lugar de string
 
