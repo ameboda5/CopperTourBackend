@@ -8,6 +8,7 @@ import { Country } from '../entities/locations/country.entity';
 import { Region } from '../entities/locations/region.entity';
 import { Department } from '../entities/locations/department.entity';
 import { City } from '../entities/locations/city.entity';
+import { DestinationCategory } from '../enums/destiny/category.enum';
 
 @Injectable()
 export class DestinationsService {
@@ -94,20 +95,48 @@ export class DestinationsService {
     }
   }
 
-  private validateCategory(category: string): void {
-    const validCategories = ['Beach', 'Mountain', 'City', 'Adventure'];
-    if (!validCategories.includes(category)) {
-      throw new BadRequestException('Invalid category for the destination');
-    }
+  private validateCategory(categories: DestinationCategory[]): void {
+    // Validamos que cada categoría en el arreglo sea una categoría válida
+    categories.forEach(category => {
+      if (!Object.values(DestinationCategory).includes(category)) {
+        throw new BadRequestException(`Invalid category: ${category}`);
+      }
+    });
   }
 
-  private validateAgeRestrictions(minAge: number, maxAge: number): void {
-    if (minAge < 0 || maxAge < 0) {
+  private validateAgeRestrictions(minAge: number, categories: DestinationCategory[]): void {
+    // Validación de edades generales
+    if (minAge < 0) {
       throw new BadRequestException('Age cannot be negative');
     }
-    if (maxAge < minAge) {
-      throw new BadRequestException('Maximum age cannot be less than minimum age');
-    }
+
+  
+    // Mapa de categorías con sus restricciones de edad
+    const ageRestrictions = {
+      [DestinationCategory.ADVENTURE]: { min: 18},
+      [DestinationCategory.CULTURAL]: { min: 10},
+      [DestinationCategory.BEACH]: { min: 0},
+      [DestinationCategory.MOUNTAIN]: { min: 12},
+      [DestinationCategory.HISTORICAL]: { min: 12},
+      [DestinationCategory.NATURE]: { min: 12},
+      [DestinationCategory.URBAN]: { min: 12},
+      [DestinationCategory.FAMILY]: { min: 0},
+      [DestinationCategory.LUXURY]: { min: 18},
+      [DestinationCategory.ROMANTIC]: { min: 18},
+      [DestinationCategory.MOTORCYCLES]: { min: 18},
+      [DestinationCategory.CHARITY]: { min: 10},
+      [DestinationCategory.GASTRONOMIC]: { min: 10},
+      [DestinationCategory.City]: { min: 18},
+    };
+  
+    // Validación por cada categoría
+    categories.forEach(category => {
+      const { min } = ageRestrictions[category] || { min: 0 };
+  
+      if (minAge < min) {
+        throw new BadRequestException(`${category} destinations are for ages between ${min}`);
+      }
+    });
   }
 
   private validateDuration(duration: string): void {
@@ -139,13 +168,19 @@ export class DestinationsService {
 
   // Crear un nuevo destino
   async create(createDestinationDto: CreateDestinationDto): Promise<Destination> {
-    const { country, region, department, city } = createDestinationDto;
+    const { country, region, department, city, minAge, categories } = createDestinationDto;
 
     // Verifica que las referencias sean válidas
     await this.validateLocationReferences(country, region, department, city);
     await this.checkDuplicateDestination(createDestinationDto);
     this.validateDates(createDestinationDto.departureDate, createDestinationDto.returnDate);
-    //this.validatePrice()
+    this.validatePrice(createDestinationDto.price)
+    this.validateCategory(createDestinationDto.categories);
+    this.validateAgeRestrictions(minAge, categories);  // Ahora pasas el arreglo de categorías
+    this.validateDuration(createDestinationDto.recommendedDuration);  
+    this.validateAccessibility(createDestinationDto.accessibility); 
+    this.validateLanguage(createDestinationDto.language); 
+    this.validateStatus(createDestinationDto.status); 
 
     const createdDestination = new this.destinationModel(createDestinationDto);
     return createdDestination.save();

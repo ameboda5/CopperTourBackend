@@ -12,5 +12,6 @@ export enum DestinationCategory {
   OTHER = 'Other',               // Otro
   MOTORCYCLES = 'Motorcycles',   // Motos
   CHARITY = 'Charity',           // Beneficencia
-  GASTRONOMIC="gastronomic"      // Gastronomia
+  GASTRONOMIC="gastronomic",      // Gastronomia
+  City = "City"
 }
